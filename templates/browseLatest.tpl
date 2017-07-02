@@ -91,7 +91,7 @@
                             <span class="sec-title label label-info">{$article->getSectionTitle()}</span>
                         </div>
                         <div class="additional-article-info">
-                            <span class="published">Published:</span><span class="date-published">{$article->getDatePublished()|date_format:"%Y-%m-%d"}</span><span class="article-id">{$article->getPages()|escape}</span>
+                            <span class="published">{translate key="plugins.browse.published"}:</span><span class="date-published">{$article->getDatePublished()|date_format:"%Y-%m-%d"}</span><span class="article-id">{$article->getPages()|escape}</span>
                         </div>
                     </div>
                 </li>
@@ -145,7 +145,7 @@
                             <span class="sec-title label label-info">{$article->getSectionTitle()}</span>
                         </div>
                         <div class="additional-article-info">
-                            <span class="published">Published:</span><span class="date-published">{$article->getDatePublished()|date_format:"%Y-%m-%d"}</span><span class="article-id">{$article->getPages()|escape}</span>
+                            <span class="published">{translate key="plugins.browse.published"}:</span><span class="date-published">{$article->getDatePublished()|date_format:"%Y-%m-%d"}</span><span class="article-id">{$article->getPages()|escape}</span>
                         </div>
                     </div>
                 </li>

@@ -17,4 +17,12 @@
 	<message key="plugins.browse.recent.articles">Recent Articles</message>
 	<message key="plugins.browse.editorials.news">Editorials, Commentaries, Education &amp; News</message>
 	<message key="plugins.browse.read.article">Read Article</message>
+    <message key="plugins.browse.published">Published</message>
+
+    <message key="plugins.generic.browse.description">Plugin for displaying most recent articles on journal index page. Also adds widget slider.</message>
+    <message key="plugins.generic.browse.displayName">Browse Latest Articles Plugin</message>
+    <message key="plugins.generic.browse.settings">Settings</message>
+    <message key="plugins.generic.browse.settings.sliderFirst">Article`s id for first slider</message>
+    <message key="plugins.generic.browse.settings.sliderSecond">Article`s id for second slider</message>
+    <message key="plugins.generic.browse.settings.sliderThird">Article`s id for third slider</message>
 </locale>
