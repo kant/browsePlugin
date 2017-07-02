@@ -13,13 +13,20 @@
         <div class="carousel-inner" role="listbox">
             {foreach from=$browseArticles key=k item=browseArticle}
                 <div class="item {if $k==0}active{/if}">
-                    <img src="{$browseArticle->getImageUrl()}" alt="...">
+                    <img src="{$browseArticle->getImageUrl()}" alt="{$browseArticle->getTitle()}">
                     <div class="carousel-caption">
                         <a class="title-link" href="{url page="article" op="view" path=$browseArticle->getArticleUrl()}">
                             <h3>{$browseArticle->getTitle()|strip|escape:"html"}</h3>
                         </a>
+                        {if preg_match("/<p>(.*)<\/p>/U", $browseArticle->getAbstract()|strip_unsafe_html, $match)}
+                            {foreach from=$match[1] item=summary}{strip}
+                                <p class="slider-caption">
+                                    {$summary|regex_replace:"/^\s*(<strong>.*<\/strong>)(?:[ ]*[:\.][ ]*)?/u":""}
+                                </p>
+                            {/strip}{/foreach}
+                        {/if}
                         <a class="read-full-carousel" href="{url page="article" op="view" path=$browseArticle->getArticleUrl()}">
-                            Read Article
+                            {translate key="plugins.browse.read.article"}
                         </a>
                     </div>
                 </div>
@@ -29,11 +36,11 @@
         <!-- Controls -->
         <a class="left carousel-control" href="#carousel-article" role="button" data-slide="prev">
             <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
-            <span class="sr-only">Previous</span>
+            <span class="sr-only">{translate key="plugins.browse.previous"}</span>
         </a>
         <a class="right carousel-control" href="#carousel-article" role="button" data-slide="next">
             <span class="glyphicon glyphicon-chevron-right" aria-hidden="true"></span>
-            <span class="sr-only">Next</span>
+            <span class="sr-only">{translate key="plugins.browse.next"}</span>
         </a>
     </div>
 </div>
@@ -41,7 +48,7 @@
 {* browse latest *}
 <div class="browse-latest-research col-xs-12 col-md-7 col-lg-7">
     <div class="recent-articles">
-        <h2 class="recent">Recent Articles</h2>
+        <h2 class="recent">{translate key="plugins.browse.recent.articles"}</h2>
     </div>
     <ol class="article-list">
         {foreach name=sections from=$publishedArticles item=section key=sectionId}
@@ -93,9 +100,9 @@
     </ol>
 </div>
 
-<div class="browse-latest-news col-md-5 col-lg-5">
+<div class="browse-latest-news col-xs-12 col-md-5 col-lg-5">
     <div class="news">
-        <h2 class="recent">Editorials, Commentaries & News</h2>
+        <h2 class="recent">{translate key="plugins.browse.editorials.news"}</h2>
     </div>
     <ol class="article-list">
         {foreach name=sections from=$publishedNews item=section key=sectionId}
@@ -134,6 +141,9 @@
                                 </div>
                             </div>
                         {/if}
+                        <div class="section">
+                            <span class="sec-title label label-info">{$article->getSectionTitle()}</span>
+                        </div>
                         <div class="additional-article-info">
                             <span class="published">Published:</span><span class="date-published">{$article->getDatePublished()|date_format:"%Y-%m-%d"}</span><span class="article-id">{$article->getPages()|escape}</span>
                         </div>

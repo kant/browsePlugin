@@ -8,33 +8,27 @@
  * Web feeds plugin settings
  *
  *}
-<div id="webFeedSettings">
-<div id="description">{translate key="plugins.generic.webfeed.description"}</div>
+<div id="browseSettings">
+<div id="description">{translate key="plugins.generic.browse.description"}</div>
 
-<h3>{translate key="plugins.generic.webfeed.settings"}</h3>
+<h3>{translate key="plugins.generic.browse.settings"}</h3>
 
 <script>
 	$(function() {ldelim}
 		// Attach the form handler.
-		$('#webFeedSettingsForm').pkpHandler('$.pkp.controllers.form.AjaxFormHandler');
+		$('#browseSettingsForm').pkpHandler('$.pkp.controllers.form.AjaxFormHandler');
 	{rdelim});
 </script>
 
-<form class="pkp_form" id="webFeedSettingsForm" method="post" action="{url router=$smarty.const.ROUTE_COMPONENT op="manage" category="generic" plugin=$pluginName verb="settings" save=true}">
+<form class="pkp_form" id="browseSettingsForm" method="post" action="{url router=$smarty.const.ROUTE_COMPONENT op="manage" category="generic" plugin=$pluginName verb="settings" save=true}">
 	{csrf}
-	{include file="controllers/notification/inPlaceNotification.tpl" notificationId="webFeedSettingsFormNotification"}
+	{include file="controllers/notification/inPlaceNotification.tpl" notificationId="browseSettingsFormNotification"}
 
-	{fbvFormArea id="webFeedSettingsFormArea"}
+	{fbvFormArea id="browseSettingsFormArea"}
 		{fbvFormSection list=true}
-			{fbvElement type="radio" id="displayPage-all" name="displayPage" value="all" checked=$displayPage|compare:"all" label="plugins.generic.webfeed.settings.all"}
-			{fbvElement type="radio" id="displayPage-homepage" name="displayPage" value="homepage" checked=$displayPage|compare:"homepage" label="plugins.generic.webfeed.settings.homepage"}
-			{fbvElement type="radio" id="displayPage-issue" name="displayPage" value="issue" checked=$displayPage|compare:"issue" label="plugins.generic.webfeed.settings.issue"}
-		{/fbvFormSection}
-
-		{fbvFormSection list=true}
-			{fbvElement type="radio" id="displayItems-issue" name="displayItems" value="issue" checked=$displayItems|compare:"issue" label="plugins.generic.webfeed.settings.currentIssue"}
-			{fbvElement type="radio" id="displayItems-recent" name="displayItems" value="recent" checked=$displayItems|compare:"recent" label="plugins.generic.webfeed.settings.recent"}
-			{fbvElement type="text" id="recentItems" value=$recentItems label="plugins.generic.webfeed.settings.recentArticles" size=$fbvStyles.size.SMALL}
+			{fbvElement type="text" id="sliderFirst" value=$sliderFirst label="plugins.generic.browse.settings.sliderFirst" size=$fbvStyles.size.SMALL}
+            {fbvElement type="text" id="sliderSecond" value=$sliderSecond label="plugins.generic.browse.settings.sliderSecond" size=$fbvStyles.size.SMALL}
+            {fbvElement type="text" id="sliderThird" value=$sliderThird label="plugins.generic.browse.settings.sliderThird" size=$fbvStyles.size.SMALL}
 		{/fbvFormSection}
 	{/fbvFormArea}
 

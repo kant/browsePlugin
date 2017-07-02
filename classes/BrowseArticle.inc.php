@@ -4,19 +4,24 @@ class BrowseArticle {
     private $title;
     private $imageUrl;
     private $articleUrl;
-    private $articleId;
+    private $abstract;
+    private $articleSectionTitle;
 
     /**
      * BrowseArticle constructor.
      * @param $title string
      * @param $imageUrl string
      * @param $articleUrl string
+     * @param $abstract string
+     * @param $articleSectionTitle string
      */
-    public function __construct($title, $imageUrl, $articleUrl)
+    public function __construct($title, $imageUrl, $articleUrl, $abstract, $articleSectionTitle)
     {
         $this->title = $title;
         $this->imageUrl = $imageUrl;
         $this->articleUrl = $articleUrl;
+        $this->abstract = $abstract;
+        $this->articleSectionTitle = $articleSectionTitle;
     }
 
     /**
@@ -68,19 +73,35 @@ class BrowseArticle {
     }
 
     /**
-     * @return int
+     * @return string
      */
-    public function getArticleId()
+    public function getAbstract()
     {
-        return $this->articleId;
+        return $this->abstract;
     }
 
     /**
-     * @param int $articleId
+     * @param string $abstract
      */
-    public function setArticleId($articleId)
+    public function setAbstract($abstract)
     {
-        $this->articleId = $articleId;
+        $this->abstract = $abstract;
+    }
+
+    /**
+     * @return string
+     */
+    public function getArticleSectionTitle()
+    {
+        return $this->articleSectionTitle;
+    }
+
+    /**
+     * @param string $articleSectionTitle
+     */
+    public function setArticleSectionTitle($articleSectionTitle)
+    {
+        $this->articleSectionTitle = $articleSectionTitle;
     }
 
 }

@@ -64,9 +64,20 @@ class BrowsePlugin extends GenericPlugin {
         $smarty =& $params[1];
         $output =& $params[2];
 
+        //articles id for displaying from database
+        $params = $this->getRequest();
+        $journal = $params->getJournal();
+        $sliderFirst = $this->getSetting($journal->getId(), 'sliderFirst');
+        $sliderSecond = $this->getSetting($journal->getId(), 'sliderSecond');
+        $sliderThird = $this->getSetting($journal->getId(), 'sliderThird');
+
+        // Limit artcles number to retrieve
+        import('lib.pkp.classes.db.DBResultRange');
+        $rangeInfo = new DBResultRange(50, 1);
+
         // Get articles except Editorial and News
         $publishedArticleDao = DAORegistry::getDAO('PublishedArticleDAO');
-        $publishedArticleObjects = $publishedArticleDao->getPublishedArticlesByJournalId($journalId = null, $rangeInfo = null, $reverse = true);
+        $publishedArticleObjects = $publishedArticleDao->getPublishedArticlesByJournalId($journalId = null, $rangeInfo, $reverse = true);
         $publishedArticles = array();
         $publishedNews = array();
 
@@ -75,20 +86,22 @@ class BrowsePlugin extends GenericPlugin {
         $xmlGalley = null;
         $browseArticles = array();
         while ((($showArticlesCount + $showNewsCount) < 19) && $publishedArticle = $publishedArticleObjects->next()) {
-            if ($showArticlesCount < 10 && ($publishedArticle->getSectionId() != 5)) {
+           // echo $publishedArticle->getSectionTitle() . ": " . $publishedArticle->getSectionId() . " \n";
+            if ($showArticlesCount < 10 && ($publishedArticle->getSectionId() != 5 && $publishedArticle->getSectionId() != 10)) {
                 $publishedArticles[]['articles'][] = $publishedArticle;
                 $showArticlesCount = $showArticlesCount + 1;
-            } elseif ($showNewsCount < 10 && ($publishedArticle->getSectionId() == 5)) {
+            } elseif ($showNewsCount < 10 && ($publishedArticle->getSectionId() == 5 || $publishedArticle->getSectionId() == 10)) {
                 $publishedNews[]['articles'][] = $publishedArticle;
                 $showNewsCount = $showNewsCount + 1;
             }
-            if ($publishedArticle->getId() == 19) {
+            if ($publishedArticle->getId() == $sliderFirst) {
                 $browseArticles = $this->slidersSearch($params, $publishedArticle, $browseArticles);
-            } elseif ($publishedArticle->getId() == 26) {
+            } elseif ($publishedArticle->getId() == $sliderSecond) {
+                $browseArticles = $this->slidersSearch($params, $publishedArticle, $browseArticles);
+            } elseif ($publishedArticle->getId() == $sliderThird) {
                 $browseArticles = $this->slidersSearch($params, $publishedArticle, $browseArticles);
             }
         }
-        print_r($browseArticles);
 
         $smarty->assign('browseArticles', $browseArticles);
         $smarty->assign('publishedArticles', $publishedArticles);
@@ -182,8 +195,8 @@ class BrowsePlugin extends GenericPlugin {
                         $fileUrl = Application::getRequest()->url(null, 'article', 'download', array($referredArticle->getBestArticleId(), $galley->getBestGalleyId(), $embeddableFile->getFileId()), $params);
 
                         //$imageUrlArray[$embeddableFile->getOriginalFileName()] = $fileUrl;
-                        if ($embeddableFile->getOriginalFileName() == "carousel.png") {
-                            $browseArticle = new BrowseArticle($publishedArticle->getLocalizedTitle(), $fileUrl, $publishedArticle->getBestArticleId());
+                        if ($embeddableFile->getOriginalFileName() == "slider.png") {
+                            $browseArticle = new BrowseArticle($publishedArticle->getLocalizedTitle(), $fileUrl, $publishedArticle->getBestArticleId(), $publishedArticle->getLocalizedAbstract(), $publishedArticle->getSectionTitle());
                             array_push($browseArticles, $browseArticle);
                         }
                     }

@@ -43,26 +43,21 @@ class SettingsForm extends Form {
 	function initData() {
 		$contextId = $this->_contextId;
 		$plugin = $this->_plugin;
-
-		$this->setData('displayPage', $plugin->getSetting($contextId, 'displayPage'));
-		$this->setData('displayItems', $plugin->getSetting($contextId, 'displayItems'));
-		$this->setData('recentItems', $plugin->getSetting($contextId, 'recentItems'));
+		$this->setData('sliderFirst', $plugin->getSetting($contextId, 'sliderFirst'));
+        $this->setData('sliderSecond', $plugin->getSetting($contextId, 'sliderSecond'));
+        $this->setData('sliderThird', $plugin->getSetting($contextId, 'sliderThird'));
 	}
 
 	/**
 	 * Assign form data to user-submitted data.
 	 */
 	function readInputData() {
-		$this->readUserVars(array('displayPage','displayItems','recentItems'));
+		$this->readUserVars(array('sliderFirst', 'sliderSecond', 'sliderThird'));
 
 		// check that recent items value is a positive integer
-		if ((int) $this->getData('recentItems') <= 0) $this->setData('recentItems', '');
-
-		// if recent items is selected, check that we have a value
-		if ($this->getData('displayItems') == 'recent') {
-			$this->addCheck(new FormValidator($this, 'recentItems', 'required', 'plugins.generic.webfeed.settings.recentItemsRequired'));
-		}
-
+		if ((int) $this->getData('sliderFirst') <= 0) $this->setData('sliderFirst', '');
+        if ((int) $this->getData('sliderSecond') <= 0) $this->setData('sliderSecond', '');
+        if ((int) $this->getData('sliderThird') <= 0) $this->setData('sliderThird', '');
 	}
 
 	/**
@@ -82,9 +77,9 @@ class SettingsForm extends Form {
 		$plugin = $this->_plugin;
 		$contextId = $this->_contextId;
 
-		$plugin->updateSetting($contextId, 'displayPage', $this->getData('displayPage'));
-		$plugin->updateSetting($contextId, 'displayItems', $this->getData('displayItems'));
-		$plugin->updateSetting($contextId, 'recentItems', $this->getData('recentItems'));
+		$plugin->updateSetting($contextId, 'sliderFirst', $this->getData('sliderFirst'));
+        $plugin->updateSetting($contextId, 'sliderSecond', $this->getData('sliderSecond'));
+        $plugin->updateSetting($contextId, 'sliderThird', $this->getData('sliderThird'));
 	}
 }
 
