@@ -15,8 +15,10 @@
     <message key="plugins.browse.previous">Попередня</message>
     <message key="plugins.browse.next">Наступна</message>
     <message key="plugins.browse.recent.articles">Нещодавні публікації</message>
-    <message key="plugins.browse.editorials.news">Редакторські статті, коментарі, освіта та новини</message>
+    <message key="plugins.browse.recent.news">Новини</message>
+    <message key="plugins.browse.recent.editorials">Редакторські статті, коментарі та освіта</message>
     <message key="plugins.browse.read.article">Читати статтю</message>
+    <message key="plugins.browse.read.news">Читати повністю</message>
     <message key="plugins.browse.published">Опубліковано</message>
 
     <message key="plugins.generic.browse.description">Плагін для відображення нещодавно опублікованих статей. Також додає спеціальний слайдер із рисунків 3х статей, id яких вказані в налаштуваннях плагіна.</message>

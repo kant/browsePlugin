@@ -73,27 +73,41 @@ class BrowsePlugin extends GenericPlugin {
 
         // Limit artcles number to retrieve
         import('lib.pkp.classes.db.DBResultRange');
-        $rangeInfo = new DBResultRange(50, 1);
+        $rangeInfoNews = new DBResultRange(9, 1);
+        $rangeInfoArticles = new DBResultRange(12, 1);
+        $rangeInfoEditorials = new DBResultRange(12, 1);
 
         // Get articles except Editorial and News
         $publishedArticleDao = DAORegistry::getDAO('PublishedArticleDAO');
-        $publishedArticleObjects = $publishedArticleDao->getPublishedArticlesByJournalId($journalId = null, $rangeInfo, $reverse = true);
-        $publishedArticles = array();
-        $publishedNews = array();
+        $publishedArticleObjects = $publishedArticleDao->getPublishedArticlesBySection($journalId = null, $rangeInfoArticles, $reverse = true, "3,4,9");
+        $publishedEditorialObjects = $publishedArticleDao->getPublishedArticlesBySection($journalId = null, $rangeInfoEditorials, $reverse = true, "5,10");
+        $publishedNewsObjects = $publishedArticleDao->getPublishedArticlesBySection($journalId = null, $rangeInfoNews, $reverse = true, "11");
 
-        $showArticlesCount = 0;
-        $showNewsCount = 0;
+        $publishedArticles = array();  //array for researches, reviews, clinical cases
+
+        $publishedNews = array();  //array for news
+
+        $publishedEditorials = array(); //array for editorials, commentaries and education
+
         $xmlGalley = null;
         $browseArticles = array();
-        while ((($showArticlesCount + $showNewsCount) < 19) && $publishedArticle = $publishedArticleObjects->next()) {
-           // echo $publishedArticle->getSectionTitle() . ": " . $publishedArticle->getSectionId() . " \n";
-            if ($showArticlesCount < 10 && ($publishedArticle->getSectionId() != 5 && $publishedArticle->getSectionId() != 10)) {
-                $publishedArticles[]['articles'][] = $publishedArticle;
-                $showArticlesCount = $showArticlesCount + 1;
-            } elseif ($showNewsCount < 10 && ($publishedArticle->getSectionId() == 5 || $publishedArticle->getSectionId() == 10)) {
-                $publishedNews[]['articles'][] = $publishedArticle;
-                $showNewsCount = $showNewsCount + 1;
+        while ($publishedArticle = $publishedArticleObjects->next()) {
+            $publishedArticles[] = $publishedArticle;
+            if ($publishedArticle->getId() == $sliderFirst) {
+                $browseArticles = $this->slidersSearch($params, $publishedArticle, $browseArticles);
+            } elseif ($publishedArticle->getId() == $sliderSecond) {
+                $browseArticles = $this->slidersSearch($params, $publishedArticle, $browseArticles);
+            } elseif ($publishedArticle->getId() == $sliderThird) {
+                $browseArticles = $this->slidersSearch($params, $publishedArticle, $browseArticles);
             }
+        }
+
+        while ($publishedArticle = $publishedNewsObjects->next()) {
+            $publishedNews[] = $publishedArticle;
+        }
+
+        while ($publishedArticle = $publishedEditorialObjects->next()) {
+            $publishedEditorials[] = $publishedArticle;
             if ($publishedArticle->getId() == $sliderFirst) {
                 $browseArticles = $this->slidersSearch($params, $publishedArticle, $browseArticles);
             } elseif ($publishedArticle->getId() == $sliderSecond) {
@@ -106,6 +120,7 @@ class BrowsePlugin extends GenericPlugin {
         $smarty->assign('browseArticles', $browseArticles);
         $smarty->assign('publishedArticles', $publishedArticles);
         $smarty->assign('publishedNews', $publishedNews);
+        $smarty->assign('publishedEditorials', $publishedEditorials);
 
         $output .= $smarty->fetch($this->getTemplatePath() . 'browseLatest.tpl');
         return false;
